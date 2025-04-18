@@ -33,12 +33,6 @@ if [ ! -b "$DISK" ]; then
   exit 1
 fi
 
-# Ensure network is up
-ping -c 1 github.com >/dev/null || { echo "❌ No internet. Abort."; exit 1; }
-
-# Sync time to avoid SSL issues
-timedatectl set-ntp true
-
 # Unmount previous mounts (safe fallback)
 umount -R "$MOUNTPOINT" || true
 
