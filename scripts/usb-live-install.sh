@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# https://raw.githubusercontent.com/TheCodeTherapy/Hephaestus/refs/heads/master/scripts/usb-live-install.sh
+# https://mgz.me/nixinstall.sh
 # ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ CONFIG                                                                   ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
@@ -23,22 +23,19 @@ USER_REPO="$USER_HOME/$PROJECT_NAME"
 # ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ SANITY CHECK                                                             ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
-# Error trap + logging
 exec > >(tee install.log) 2>&1
 trap 'echo "❌ An error occurred. Check install.log for details."' ERR
-
-# Ensure disk exists
-if [ ! -b "$DISK" ]; then
-  echo "ERROR: Disk $DISK does not exist"
-  exit 1
-fi
 
 if [ "$EUID" -ne 0 ]; then
   echo "❌ This script must be run as root. Try: sudo ./install.sh"
   exit 1
 fi
 
-# Unmount previous mounts (safe fallback)
+if [ ! -b "$DISK" ]; then
+  echo "ERROR: Disk $DISK does not exist"
+  exit 1
+fi
+
 umount -R "$MOUNTPOINT" || true
 
 # ╔══════════════════════════════════════════════════════════════════════════╗
@@ -86,9 +83,35 @@ git clone "$REPO_URL" "$USER_REPO"
 chown -R 1000:100 "$USER_HOME"  # UID:GID of first user (assumes 1000)
 
 # ╔══════════════════════════════════════════════════════════════════════════╗
+# ║ PASSWORD SETUP                                                           ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+echo "[*] Set password for user $USERNAME"
+read -s -p "Password: " user_pass
+echo
+read -s -p "Confirm: " user_pass_confirm
+echo
+
+if [[ "$user_pass" != "$user_pass_confirm" ]]; then
+  echo "❌ Passwords do not match. Aborting."
+  exit 1
+fi
+
+echo "[*] Hashing password..."
+hashed_pass=$(nix-shell -p whois --run "mkpasswd -m sha-512 '$user_pass'")
+
+echo "[*] Writing password override into /etc/nixos/extra-user-password.nix"
+cat > "$MOUNTPOINT/etc/nixos/extra-user-password.nix" <<EOF
+{ config, pkgs, ... }: {
+  users.users.$USERNAME.hashedPassword = "$hashed_pass";
+}
+EOF
+
+# ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ INSTALL NIXOS                                                            ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
 echo "[*] Installing NixOS from flake in user home..."
-nixos-install --no-root-password --flake "/home/$USERNAME/$PROJECT_NAME#$FLAKE_HOST"
+nixos-install --no-root-password \
+  --flake "/home/$USERNAME/$PROJECT_NAME#$FLAKE_HOST" \
+  --include /etc/nixos/extra-user-password.nix
 
 echo "[✔] Installation complete. Reboot into your flake-managed system."
