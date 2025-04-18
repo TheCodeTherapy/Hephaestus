@@ -33,6 +33,11 @@ if [ ! -b "$DISK" ]; then
   exit 1
 fi
 
+if [ "$EUID" -ne 0 ]; then
+  echo "❌ This script must be run as root. Try: sudo ./install.sh"
+  exit 1
+fi
+
 # Unmount previous mounts (safe fallback)
 umount -R "$MOUNTPOINT" || true
 
