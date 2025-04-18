@@ -82,7 +82,7 @@
       wayreload = "hyprctl reload";
       ll = "ls -hl";
       la = "ls -hlA";
-      update = "cd ~/home.nix && sudo nixos-rebuild switch --flake \".#threadripper\"";
+      update = "cd ~/Hephaestus && sudo nixos-rebuild switch --flake \".#threadripper\"";
     };
     initExtra = ''
       source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
