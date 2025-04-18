@@ -117,7 +117,7 @@ fi
 # ║ INSTALL NIXOS                                                            ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
 echo "[*] Installing NixOS from flake in user home..."
-nixos-install --impure --no-root-password --flake "$USER_REPO#$FLAKE_HOST"
+nixos-install --impure --no-root-password --flake /mnt/home/marcogomez/Hephaestus#threadripper
 
 echo "[✔] Installation complete. After boot:"
 echo "    rm ~/Hephaestus/etc/nixos/password-override.nix"
