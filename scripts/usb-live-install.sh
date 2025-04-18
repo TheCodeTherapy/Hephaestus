@@ -110,14 +110,14 @@ EOF
 
 # Add the override module to flake.nix if not already added
 if ! grep -q 'password-override.nix' "$USER_REPO/flake.nix"; then
-  sed -i "/\/configuration\.nix/a\        ./etc/nixos/password-override.nix" "$USER_REPO/flake.nix"
+  sed -i "/\/configuration\.nix/a\        $USER_REPO/etc/nixos/password-override.nix" "$USER_REPO/flake.nix"
 fi
 
 # ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ INSTALL NIXOS                                                            ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
 echo "[*] Installing NixOS from flake in user home..."
-nixos-install --no-root-password --flake "/home/$USERNAME/$PROJECT_NAME#$FLAKE_HOST"
+nixos-install --impure --no-root-password --flake "$USER_REPO#$FLAKE_HOST"
 
 echo "[✔] Installation complete. After boot:"
 echo "    rm ~/Hephaestus/etc/nixos/password-override.nix"
