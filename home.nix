@@ -12,6 +12,7 @@
   home.file.".config/ghostty/config".source = ./dotfiles/ghostty/config;
   home.file.".config/ghostty/shaders/_crt.frag".source = ./dotfiles/ghostty/shaders/_crt.frag;
   home.file.".local/share/ghostty/themes/catppuccin-mocha".source = ./dotfiles/ghostty/themes/catppuccin-mocha;
+  home.file.".config/Code/User/settings.json".source = ./dotfiles/vscode/settings.json;
   home.file.".raysessions/.keep".text = "";
 
   home.sessionVariables = {
