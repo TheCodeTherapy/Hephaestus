@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Brave (ANGLE-OpenGL)
+Comment=Launch Brave with ANGLE+OpenGL fallback for NVIDIA
+Exec=brave --ozone-platform=x11 --use-gl=angle --use-angle=gl --enable-features=Vulkan,DefaultANGLEOpenGL --ignore-gpu-blocklist --password-store=basic %U
+Terminal=false
+Type=Application
+Icon=brave-browser
+Categories=Network;WebBrowser;
+StartupWMClass=Brave-browser

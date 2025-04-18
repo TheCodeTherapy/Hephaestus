@@ -17,7 +17,6 @@
     XKB_DEFAULT_LAYOUT = "us";
     XKB_DEFAULT_VARIANT = "intl";
     XDG_CURRENT_DESKTOP = "Hyprland";
-    XFT_DPI = "96";
     GDK_DPI_SCALE = "1.0";
     GDK_SCALE = "1";
     PAGER = "most";

@@ -224,7 +224,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     fragColor.rgb = mix(fragColor.rgb, fragColor.rgb * fragColor.rgb, DARKEN_MIX);
     vec3 vig = fragColor.rgb * VIGNETTE_BRIGHTNESS * pow(uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y), VIGNETTE_SPREAD);
-    fragColor.rgb += gaussgrain(iTime * 0.75) * 0.05;
+    fragColor.rgb += gaussgrain(iTime * 0.75) * 0.1;
     fragColor.rgb = mix(fragColor.rgb, vig, 0.42);
     fragColor.rgb *= vec3(TINT);
 
@@ -256,13 +256,22 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     #ifdef BLOOM_SPREAD
     vec2 step = BLOOM_SPREAD * vec2(TWOTHIRDS) / iResolution.xy;
 
+    #ifdef OLD_SPREAD
     for (int i = 0; i < 24; i++) {
         vec3 bloom_sample = bloom_samples[i];
         vec4 neighbor = texture(iChannel0, uv + bloom_sample.xy * step);
         float luminance = 0.299 * neighbor.r + 0.587 * neighbor.g + 0.114 * neighbor.b;
-
         fragColor += luminance * bloom_sample.z * neighbor * BLOOM_STRENGTH;
     }
+    #else
+    for (int i = 0; i < 30; i++) {
+        float offset = 1.0 + max(0.0, float(i - 8)) / 128.0;
+        vec3 bloom_sample = bloom_samples[i];
+        vec4 neighbor = texture(iChannel0, uv + bloom_sample.xy * step * offset);
+        float luminance = 0.299 * neighbor.r + 0.587 * neighbor.g + 0.114 * neighbor.b;
+        fragColor += luminance * bloom_sample.z * neighbor * BLOOM_STRENGTH;
+    }
+    #endif
 
     fragColor = clamp(fragColor, 0.0, 1.0);
     #endif

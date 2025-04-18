@@ -67,14 +67,23 @@
     enable32Bit = true;
   };
 
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"];
+
   hardware.nvidia = {
-    modesetting.enable = true;
+    modesetting.enable = true; # Modesetting is required.
+    powerManagement.enable = false; # Experimental, can cause sleep/suspend to fail.
+    powerManagement.finegrained = false; # Experimental, turns off GPU when not in use.
+    nvidiaSettings = true; # Nvidia settings menu accessible via `nvidia-settings`
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     forceFullCompositionPipeline = true;
-    powerManagement.enable = true;
-    powerManagement.finegrained = false;
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    # Support is limited to the Turing and later architectures. Full list of 
+    # supported GPUs is at: 
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Only available from driver 515.43.04+
     open = false;
-    nvidiaSettings = true;
   };
 
 
@@ -132,6 +141,18 @@
     };
   };
 
+  services.udisks2.enable = true;
+
+  # XDG Frontend
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+  };
+  xdg.mime.enable = true;
+
 
 
   # ┌────────────────────────────────────────────────────────────────────────┐
@@ -152,6 +173,8 @@
     { domain = "@realtime"; item = "memlock"; type = "hard"; value = "unlimited"; }
   ];
 
+  security.polkit.enable = true;
+
 
 
   # ┌────────────────────────────────────────────────────────────────────────┐
@@ -167,12 +190,27 @@
   # │ Environment Settings                                                   │
   # └────────────────────────────────────────────────────────────────────────┘
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-mono
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+  ];
+
   # Variables
   environment.sessionVariables = {
+    # Nvidia
+     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_DRM_NO_ATOMIC = "1"; # optional
+
     # Wayland
     NIXOS_OZONE_WL = "1";
     XDG_SESSION_TYPE = "wayland";
     XDG_CURRENT_DESKTOP = "Hyprland";
+    BRAVE_ENABLE_WAYLAND = "1";
 
     # GTK
     GTK_THEME = "adw-gtk3-dark";
@@ -201,16 +239,18 @@
     libgme libsndfile libvpx flatpak cloudflared gh docker swww yt-dlp waybar
     docker-compose nvidia-container-toolkit imagemagick ffmpeg firefox  ardour
     prismlauncher dialog wl-clipboard vscode code-cursor raysession brave grim
-    google-chrome oversteer kdePackages.dolphin obs-studio blender slurp 
-    prismlauncher winetricks protonup-ng gimp kdePackages.kdenlive swappy
-    discord-canary rofi-wayland glslang libdisplay-info libdrm
+    google-chrome oversteer obs-studio blender slurp prismlauncher winetricks
+    protonup-ng gimp swappy discord-canary rofi-wayland glslang libdrm lazygit
+    procs libdisplay-info xdg-utils shared-mime-info mime-types imv
+    desktop-file-utils  kdePackages.polkit-kde-agent-1 kdePackages.dolphin
+    kdePackages.kdenlive kdePackages.kservice
 
     # Theming
     noto-fonts-emoji noto-fonts
     qt5.qtwayland libsForQt5.qt5ct libsForQt5.qtstyleplugin-kvantum
     qt6.qtwayland qt6ct qt6Packages.qtstyleplugin-kvantum kdePackages.qt6ct
     adw-gtk3 gnome-themes-extra papirus-icon-theme catppuccin-kvantum
-    gsettings-desktop-schemas lxappearance themechanger jetbrains-mono
+    gsettings-desktop-schemas lxappearance themechanger
 
     # Custom raysession wrapper with Wayland tweaks
     (pkgs.raysession.overrideAttrs (old: {
@@ -272,6 +312,7 @@
     linger = true;
   };
 
+  users.groups.plocate = {};
 
 
   # ┌────────────────────────────────────────────────────────────────────────┐
