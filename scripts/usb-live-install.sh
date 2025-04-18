@@ -99,19 +99,26 @@ fi
 echo "[*] Hashing password..."
 hashed_pass=$(nix-shell -p whois --run "mkpasswd -m sha-512 '$user_pass'")
 
-echo "[*] Writing password override into /etc/nixos/extra-user-password.nix"
-cat > "$MOUNTPOINT/etc/nixos/extra-user-password.nix" <<EOF
+echo "[*] Injecting password override into flake..."
+mkdir -p "$USER_REPO/etc/nixos"
+cat > "$USER_REPO/etc/nixos/password-override.nix" <<EOF
 { config, pkgs, ... }: {
   users.users.$USERNAME.hashedPassword = "$hashed_pass";
+  users.users.root.hashedPassword = "$hashed_pass";
 }
 EOF
+
+# Add the override module to flake.nix if not already added
+if ! grep -q 'password-override.nix' "$USER_REPO/flake.nix"; then
+  sed -i "/\/configuration\.nix/a\        ./etc/nixos/password-override.nix" "$USER_REPO/flake.nix"
+fi
 
 # ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ INSTALL NIXOS                                                            ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
 echo "[*] Installing NixOS from flake in user home..."
-nixos-install --no-root-password \
-  --flake "/home/$USERNAME/$PROJECT_NAME#$FLAKE_HOST" \
-  --include /etc/nixos/extra-user-password.nix
+nixos-install --no-root-password --flake "/home/$USERNAME/$PROJECT_NAME#$FLAKE_HOST"
 
-echo "[✔] Installation complete. Reboot into your flake-managed system."
+echo "[✔] Installation complete. After boot:"
+echo "    rm ~/Hephaestus/etc/nixos/password-override.nix"
+echo "    and remove the line from flake.nix"
