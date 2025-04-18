@@ -16,21 +16,21 @@
   ];
   boot.kernelModules = [ "kvm-amd" "v4l2loopback" ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/dcadf543-7fd1-4a52-b76a-7cd7c2a93143";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/ROOT";
+    fsType = "ext4";
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/f96126ac-eeff-40d2-8963-3f58861a4fc2";
-      fsType = "ext4";
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-label/HOME";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/87EB-56EE";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/BOOT";
+    fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
+  };
 
   swapDevices = [ ];
   networking.useDHCP = lib.mkDefault true;
