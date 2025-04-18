@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# https://raw.githubusercontent.com/TheCodeTherapy/Hephaestus/refs/heads/master/scripts/usb-live-install.sh
 # ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ CONFIG                                                                   ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
