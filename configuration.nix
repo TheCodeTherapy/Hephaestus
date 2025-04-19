@@ -114,10 +114,11 @@
       defaultSession = "none+i3";
     };
 
-    libinput.enable = true;
-
-    layout = "us";
-    xkbVariant = "intl";
+    xkb = {
+      enable = true;
+      layout = "us";
+      variant = "intl";
+    }.
   };
 
   services.libinput.enable = true;
