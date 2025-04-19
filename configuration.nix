@@ -96,6 +96,10 @@
   # OpenSSH server
   services.openssh.enable = true;
 
+  # DBUS
+  services.dbus.enable = true;
+
+
   # X11
   services.xserver = {
     enable = true;
@@ -155,11 +159,19 @@
 
   # XDG Frontend
   xdg.portal = {
+    # https://github.com/flatpak/xdg-desktop-portal/blob/1.18.1/doc/portals.conf.rst.in
     enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
+    # Explicitly set the desired backend order
+    config = {
+      common = {
+        default = "gtk";
+        # Uncomment or override below if specific backends needed for some portals:
+        # org.freedesktop.impl.portal.Screencast = "none";
+      };
+    };
+    configPackages = with pkgs; [ xdg-desktop-portal-gtk ];
   };
+
   xdg.mime.enable = true;
 
 
@@ -249,7 +261,7 @@
     prismlauncher dialog wl-clipboard vscode code-cursor raysession imv gimp
     google-chrome oversteer obs-studio  prismlauncher winetricks glslang rofi
     protonup-ng discord-canary libdrm lazygit procs xdg-utils libdisplay-info
-    shared-mime-info mime-types desktop-file-utils
+    shared-mime-info mime-types desktop-file-utils dconf
     kdePackages.polkit-kde-agent-1 kdePackages.dolphin
     kdePackages.kdenlive kdePackages.kservice
 
