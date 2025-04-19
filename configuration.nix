@@ -267,15 +267,6 @@
     adw-gtk3 gnome-themes-extra papirus-icon-theme catppuccin-kvantum
     gsettings-desktop-schemas lxappearance themechanger
 
-    # Custom raysession wrapper with Wayland tweaks
-    (pkgs.raysession.overrideAttrs (old: {
-      postInstall = (old.postInstall or "") + ''
-        wrapProgram $out/bin/raysession \
-          --set QT_QPA_PLATFORM wayland \
-          --prefix QT_QPA_PLATFORM_PLUGIN_PATH : "${pkgs.qt5.qtbase}/lib/qt-5/plugins/platforms"
-      '';
-    }))
-
     # Python tooling
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
