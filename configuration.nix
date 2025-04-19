@@ -118,7 +118,7 @@
       enable = true;
       layout = "us";
       variant = "intl";
-    }.
+    };
   };
 
   services.libinput.enable = true;
