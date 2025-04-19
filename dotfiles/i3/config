@@ -14,8 +14,8 @@ client.placeholder          #000000 #304848 #ffffff #000000 #303030
 client.background           #008800
 
 focus_follows_mouse yes
-gaps inner 0
-gaps outer 0
+gaps inner 7
+gaps outer 3
 
 title_align center
 font pango:JetBrainsMono Nerd Font, NotoMono Nerd Font, MesloLGS NF, Misc Termsyn, Wuncon Siji 12
@@ -155,28 +155,28 @@ bindsym $sup+c exec rofi -modi "clipboard:greenclip print" -show clipboard
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym ccedilla resize grow width 10 px or 10 ppt
+  # These bindings trigger as soon as you enter the resize mode
+  bindsym j resize shrink width 10 px or 10 ppt
+  bindsym k resize grow height 10 px or 10 ppt
+  bindsym l resize shrink height 10 px or 10 ppt
+  bindsym ccedilla resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 5 px or 5 ppt
-        bindsym Down resize grow height 5 px or 5 ppt
-        bindsym Up resize shrink height 5 px or 5 ppt
-        bindsym Right resize grow width 5 px or 5 ppt
+  # same bindings, but for the arrow keys
+  bindsym Left resize shrink width 5 px or 5 ppt
+  bindsym Down resize grow height 5 px or 5 ppt
+  bindsym Up resize shrink height 5 px or 5 ppt
+  bindsym Right resize grow width 5 px or 5 ppt
 
-        # back to normal: Enter or Escape or $sup+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $sup+r mode "default"
+  # back to normal: Enter or Escape or $sup+r
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $sup+r mode "default"
 }
-
 
 assign [title="^.*wip.*$"] $ws2
 for_window [title="^.*wip.*$"] move container to workspace $ws2, workspace $ws2, floating enable
 for_window [title="^.*wip.*$"] floating enable, resize set 802 402, move position 6869 668
+
 # Workspace 1 =================================================================
 assign [class="Code"] $ws1
 assign [class="VSCodium"] $ws1
@@ -228,7 +228,6 @@ exec --no-startup-id xrandr \
   --output HDMI-0 --mode 3840x2160 --rate 119.88 --rotate normal --left-of DP-0 \
   --output DP-2 --off \
   --output DP-4 --off
-
 
 exec --no-startup-id feh --bg-scale --no-xinerama ~/Hephaestus/assets/wallpaper/32x9_trees.png
 
