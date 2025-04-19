@@ -257,7 +257,7 @@
     google-chrome oversteer obs-studio  prismlauncher winetricks glslang rofi
     protonup-ng discord-canary libdrm lazygit procs xdg-utils libdisplay-info
     shared-mime-info mime-types desktop-file-utils dconf i3 xterm feh
-    kdePackages.polkit-kde-agent-1 kdePackages.dolphin
+    kdePackages.polkit-kde-agent-1 kdePackages.dolphin picom-pijulius
     kdePackages.kdenlive kdePackages.kservice
 
     # Theming

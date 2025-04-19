@@ -10,6 +10,7 @@
 
   home.file.".config/i3/config".source = ./dotfiles/i3/config;
   home.file.".config/i3blocks/config".source = ./dotfiles/i3blocks/config;
+  home.file.".config/picom/picom.conf".source = ./dotfiles/picom/picom.conf;
   home.file.".config/ghostty/config".source = ./dotfiles/ghostty/config;
   home.file.".config/ghostty/shaders/_crt.frag".source = ./dotfiles/ghostty/shaders/_crt.frag;
   home.file.".local/share/ghostty/themes/catppuccin-mocha".source = ./dotfiles/ghostty/themes/catppuccin-mocha;

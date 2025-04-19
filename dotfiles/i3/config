@@ -218,7 +218,7 @@ bindsym --whole-window --border $sup+shift+button5 workspace next
 for_window [title="^Friends List$"] floating enable
 for_window [title="^Volume Control$"] floating enable
 
-#exec --no-startup-id picom --config ~/ZDotfiles/dotconfig/picom/picom.conf
+exec picom
 
 exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
 exec_always --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
