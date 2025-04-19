@@ -161,6 +161,10 @@
   xdg.portal = {
     # https://github.com/flatpak/xdg-desktop-portal/blob/1.18.1/doc/portals.conf.rst.in
     enable = true;
+    # Required legacy field to pass NixOS's module validation
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
     # Explicitly set the desired backend order
     config = {
       common = {
@@ -169,7 +173,10 @@
         # org.freedesktop.impl.portal.Screencast = "none";
       };
     };
-    configPackages = with pkgs; [ xdg-desktop-portal-gtk ];
+    # Required for newer interface preference resolution
+    configPackages = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
   };
 
   xdg.mime.enable = true;
