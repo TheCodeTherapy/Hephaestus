@@ -233,7 +233,7 @@
     GTK_USE_PORTAL = "1";
 
     # Qt
-    QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORM = "xcb";
     QT_QPA_PLATFORMTHEME = "qt5ct";  # Applies to both Qt5 and Qt6
     QT_STYLE_OVERRIDE = "kvantum";
 
