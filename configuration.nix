@@ -96,6 +96,15 @@
   # OpenSSH server
   services.openssh.enable = true;
 
+  # X11
+  services.xserver = {
+    enable = true;
+    displayManager.startx.enable = false;
+    displayManager.defaultSession = "none+i3";
+    windowManager.i3.enable = true;
+    libinput.enable = true;
+  };
+
   # Display manager
   users.users.greeter = {
     isSystemUser = true;
@@ -107,7 +116,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions ${pkgs.hyprland}/share/wayland-sessions";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd ${pkgs.i3}/bin/i3";
         user = "greeter";
       };
     };
@@ -149,7 +158,6 @@
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
     ];
   };
   xdg.mime.enable = true;
@@ -204,15 +212,13 @@
      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     LIBVA_DRIVER_NAME = "nvidia";
     GBM_BACKEND = "nvidia-drm";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    WLR_DRM_NO_ATOMIC = "1"; # optional
-    NVD_BACKEND = "direct";
 
-    # Wayland
-    NIXOS_OZONE_WL = "1";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    BRAVE_ENABLE_WAYLAND = "1";
+    # X11
+    XDG_SESSION_TYPE = "x11";
+    XDG_CURRENT_DESKTOP = "i3";
+    DESKTOP_SESSION = "i3";
+    XKB_DEFAULT_LAYOUT = "us";
+    XKB_DEFAULT_VARIANT = "intl";
 
     # GTK
     GTK_THEME = "adw-gtk3-dark";
@@ -238,19 +244,19 @@
     jq unzip ffmpeg bc fzf ripgrep zsh zsh-completions zsh-syntax-highlighting
     zsh-autosuggestions neofetch ghostty fd libtool bzip2 zip zlib plocate SDL
     SDL2 sdl3 fluidsynth timidity mesa libGLU glew mpg123 mpv btop libjpeg vlc
-    libgme libsndfile libvpx flatpak cloudflared gh docker swww yt-dlp waybar
-    docker-compose nvidia-container-toolkit imagemagick ffmpeg firefox  ardour
-    prismlauncher dialog wl-clipboard vscode code-cursor raysession brave grim
-    google-chrome oversteer obs-studio blender slurp prismlauncher winetricks
-    protonup-ng gimp swappy discord-canary rofi-wayland glslang libdrm lazygit
-    procs libdisplay-info xdg-utils shared-mime-info mime-types imv
-    desktop-file-utils  kdePackages.polkit-kde-agent-1 kdePackages.dolphin
+    libgme libsndfile libvpx flatpak cloudflared gh docker yt-dlp brave ardour
+    docker-compose nvidia-container-toolkit imagemagick ffmpeg firefox blender
+    prismlauncher dialog wl-clipboard vscode code-cursor raysession imv gimp
+    google-chrome oversteer obs-studio  prismlauncher winetricks glslang rofi
+    protonup-ng discord-canary libdrm lazygit procs xdg-utils libdisplay-info
+    shared-mime-info mime-types desktop-file-utils
+    kdePackages.polkit-kde-agent-1 kdePackages.dolphin
     kdePackages.kdenlive kdePackages.kservice
 
     # Theming
     noto-fonts-emoji noto-fonts
-    qt5.qtwayland libsForQt5.qt5ct libsForQt5.qtstyleplugin-kvantum
-    qt6.qtwayland qt6ct qt6Packages.qtstyleplugin-kvantum kdePackages.qt6ct
+    libsForQt5.qt5ct libsForQt5.qtstyleplugin-kvantum
+    qt6ct qt6Packages.qtstyleplugin-kvantum kdePackages.qt6ct
     adw-gtk3 gnome-themes-extra papirus-icon-theme catppuccin-kvantum
     gsettings-desktop-schemas lxappearance themechanger
 
@@ -292,9 +298,6 @@
   # ┌────────────────────────────────────────────────────────────────────────┐
   # │ Programs                                                               │
   # └────────────────────────────────────────────────────────────────────────┘
-
-  # Enable the Wayland compositor
-  programs.hyprland.enable = true;
 
   # Enable ZSH
   programs.zsh.enable = true;

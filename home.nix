@@ -8,7 +8,6 @@
     @theme "rounded"
   '';
 
-  home.file.".config/hypr/hyprland.conf".source = ./dotfiles/hypr/hyprland.conf;
   home.file.".config/ghostty/config".source = ./dotfiles/ghostty/config;
   home.file.".config/ghostty/shaders/_crt.frag".source = ./dotfiles/ghostty/shaders/_crt.frag;
   home.file.".local/share/ghostty/themes/catppuccin-mocha".source = ./dotfiles/ghostty/themes/catppuccin-mocha;
@@ -16,9 +15,9 @@
   home.file.".raysessions/.keep".text = "";
 
   home.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "i3";
     XKB_DEFAULT_LAYOUT = "us";
     XKB_DEFAULT_VARIANT = "intl";
-    XDG_CURRENT_DESKTOP = "Hyprland";
     GDK_DPI_SCALE = "1.0";
     GDK_SCALE = "1";
     PAGER = "most";
