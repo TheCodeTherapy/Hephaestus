@@ -111,7 +111,7 @@
 
     displayManager = {
       lightdm.enable = true;
-      defaultSession = "none+i3";
+      defaultSession = "none+i3"; # deprecated but still needed because Nix sucks
     };
 
     xkb = {
