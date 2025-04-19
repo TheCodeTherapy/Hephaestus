@@ -79,7 +79,16 @@ mount "$HOME" "$MOUNTPOINT/home"
 # ╚══════════════════════════════════════════════════════════════════════════╝
 echo "[*] Cloning flake repo into $USER_REPO..."
 mkdir -p "$USER_HOME"
-git clone "$REPO_URL" "$USER_REPO"
+
+# Check if remote branch exists
+if git ls-remote --heads "$REPO_URL" "de/i3" | grep -q "refs/heads/de/i3"; then
+  echo "[*] Cloning branch de/i3..."
+  git clone --branch de/i3 --single-branch "$REPO_URL" "$USER_REPO"
+else
+  echo "❌ Remote branch 'de/i3' not found in $REPO_URL"
+  exit 1
+fi
+
 chown -R 1000:100 "$USER_HOME"  # UID:GID of first user (assumes 1000)
 
 # ╔══════════════════════════════════════════════════════════════════════════╗
