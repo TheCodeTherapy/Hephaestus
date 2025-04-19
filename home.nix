@@ -80,7 +80,7 @@
     syntaxHighlighting.enable = true;
     historySubstringSearch.enable = true;
     shellAliases = {
-      waystop = "hyprctl dispatch exit";
+      xstop = "i3-msg exit";
       wayreload = "hyprctl reload";
       ll = "ls -hl";
       la = "ls -hlA";
