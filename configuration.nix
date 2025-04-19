@@ -115,6 +115,9 @@
     };
 
     libinput.enable = true;
+
+    layout = "us";
+    xkbVariant = "intl";
   };
 
   services.libinput.enable = true;
