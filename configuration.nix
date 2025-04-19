@@ -115,7 +115,6 @@
     };
 
     xkb = {
-      enable = true;
       layout = "us";
       variant = "intl";
     };
