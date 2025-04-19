@@ -67,9 +67,6 @@
     enable32Bit = true;
   };
 
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
-
   hardware.nvidia = {
     modesetting.enable = true; # Modesetting is required.
     powerManagement.enable = false; # Experimental, can cause sleep/suspend to fail.
@@ -99,43 +96,29 @@
   # DBUS
   services.dbus.enable = true;
 
-
   # X11
   services.xserver = {
     enable = true;
-    displayManager.startx.enable = false;
-    windowManager.i3.enable = true;
+
+    videoDrivers = ["nvidia"];
+
+    windowManager.i3 = {
+      enable = true;
+      extraPackages = with pkgs; [
+        dmenu i3status i3lock i3blocks
+      ];
+    };
+
+    displayManager = {
+      lightdm.enable = true;
+      defaultSession = "none+i3";
+    };
+
+    libinput.enable = true;
   };
 
   services.libinput.enable = true;
   services.displayManager.defaultSession = "none+i3";
-
-  # Display manager
-  users.users.greeter = {
-    isSystemUser = true;
-    description = "greetd login";
-    shell = pkgs.bashInteractive;
-    home = "/var/empty";
-  };
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --cmd ${pkgs.i3}/bin/i3";
-        user = "greeter";
-      };
-    };
-  };
-  systemd.services.greetd.serviceConfig = {
-    Type = "idle";
-    StandardInput = "tty";
-    StandardOutput = "tty";
-    StandardError = "journal";
-    TTYReset = true;
-    TTYVHangup = true;
-    TTYVTDisallocate = true;
-  };
-
 
   # Pipewire
   services.pipewire = {
@@ -226,6 +209,8 @@
     nerd-fonts.droid-sans-mono
   ];
 
+  environment.pathsToLink = [ "/libexec" ];
+
   # Variables
   environment.sessionVariables = {
     # Nvidia
@@ -248,7 +233,6 @@
     QT_QPA_PLATFORM = "wayland";
     QT_QPA_PLATFORMTHEME = "qt5ct";  # Applies to both Qt5 and Qt6
     QT_STYLE_OVERRIDE = "kvantum";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
 
     # Cursors
     XCURSOR_THEME = "Adwaita";
@@ -269,7 +253,7 @@
     prismlauncher dialog wl-clipboard vscode code-cursor raysession imv gimp
     google-chrome oversteer obs-studio  prismlauncher winetricks glslang rofi
     protonup-ng discord-canary libdrm lazygit procs xdg-utils libdisplay-info
-    shared-mime-info mime-types desktop-file-utils dconf
+    shared-mime-info mime-types desktop-file-utils dconf i3 xterm
     kdePackages.polkit-kde-agent-1 kdePackages.dolphin
     kdePackages.kdenlive kdePackages.kservice
 
