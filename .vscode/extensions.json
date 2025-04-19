@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "dcasella.i3",
     "bbenoist.nix",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
