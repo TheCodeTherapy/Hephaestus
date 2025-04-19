@@ -76,7 +76,8 @@
     powerManagement.finegrained = false; # Experimental, turns off GPU when not in use.
     nvidiaSettings = true; # Nvidia settings menu accessible via `nvidia-settings`
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    forceFullCompositionPipeline = true;
+    forceFullCompositionPipeline = false;
+    gsp.enable = true;
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
     # Support is limited to the Turing and later architectures. Full list of 
@@ -205,6 +206,7 @@
     GBM_BACKEND = "nvidia-drm";
     WLR_NO_HARDWARE_CURSORS = "1";
     WLR_DRM_NO_ATOMIC = "1"; # optional
+    NVD_BACKEND = "direct";
 
     # Wayland
     NIXOS_OZONE_WL = "1";
